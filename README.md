@@ -183,8 +183,8 @@ npm run dev
 ```
 The Express server will start on `http://localhost:5000`.
 
-### 5. Launch Frontend
-Serve the `frontend/` directory using a local HTTP server (such as [VS Code Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) running on `http://127.0.0.1:5501` or `http://localhost:5500` to match CORS configuration).
+### 5. Frontend
+Serve the `frontend/` directory using a local HTTP server ( run on `http://127.0.0.1:5501` or `http://localhost:5500` to match CORS configuration).
 
 ---
 
