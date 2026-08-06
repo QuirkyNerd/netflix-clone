@@ -117,10 +117,21 @@ export async function login(req, res) {
 export async function logout(req, res) {
     try {
         // Clear the JWT cookie
-        res.clearCookie("jwt-token"); // Ensure the cookie name matches your setup
+        res.clearCookie("jwt-netflix");
         res.status(200).json({ success: true, message: "Logged out successfully" });
     } catch (error) {
-        console.error("Error in logout controller:", error.message); // Log the full error for debugging
+        console.error("Error in logout controller:", error.message);
         res.status(500).json({ success: false, message: "Internal server error" });
     }
 }
+
+// Auth check function
+export async function authCheck(req, res) {
+    try {
+        res.status(200).json({ success: true, user: req.user });
+    } catch (error) {
+        console.error("Error in authCheck controller:", error.message);
+        res.status(500).json({ success: false, message: "Internal server error" });
+    }
+}
+

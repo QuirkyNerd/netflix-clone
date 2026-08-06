@@ -173,7 +173,7 @@
                                   </div>
                                 </div>
                               </a>
-                              <a href="#" class="iq-sub-card setting-dropdown">
+                              <a href="#" class="iq-sub-card setting-dropdown logout-btn">
                                 <div class="media align-items-center">
                                   <div class="right-icon">
                                     <i class="fa fa-sign-out text-primary"></i>
@@ -183,6 +183,7 @@
                                   </div>
                                 </div>
                               </a>
+
                             </div>
                           </div>
                         </div>
@@ -286,7 +287,7 @@
                               </div>
                             </div>
                           </a>
-                          <a href="#" class="iq-sub-card setting-dropdown">
+                          <a href="#" class="iq-sub-card setting-dropdown logout-btn">
                             <div class="media align-items-center">
                               <div class="right-icon">
                                 <i class="fa fa-sign-out text-primary"></i>
@@ -296,6 +297,7 @@
                               </div>
                             </div>
                           </a>
+
                         </div>
                       </div>
                     </div>
@@ -4685,6 +4687,33 @@
   <script src="js/slick-animation.min.js"></script>
 
   <script src="main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    (async function checkAuthSession() {
+      try {
+        await axios.get('http://localhost:5000/api/v1/auth/authCheck', { withCredentials: true });
+      } catch (err) {
+        console.warn('Unauthenticated access guard triggered:', err);
+        window.location.href = '../login.html';
+      }
+    })();
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.logout-btn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          e.preventDefault();
+          try {
+            await axios.post('http://localhost:5000/api/v1/auth/logout', {}, { withCredentials: true });
+          } catch (err) {
+            console.error('Logout request failed:', err);
+          } finally {
+            window.location.href = '../login.html';
+          }
+        });
+      });
+    });
+  </script>
 </body>
+
 
 </html>

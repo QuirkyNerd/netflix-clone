@@ -1,35 +1,47 @@
 import express from "express";
 import dotenv from "dotenv";
-import authRoutes from "./routes/auth.route.js"; // Ensure this path is correct
+import cookieParser from "cookie-parser";
+import authRoutes from "./routes/auth.route.js";
 import { connectDB } from "./config/db.js";
-import cors from 'cors'; // Import CORS
+import cors from "cors";
 
 // Load environment variables from .env file
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000; // Use the port from environment variables or default to 5000
+const PORT = process.env.PORT || 5000;
 
 // Connect to the database
 connectDB();
 
-// Middleware to parse JSON requests
+// Middleware to parse JSON requests and cookies
 app.use(express.json());
+app.use(cookieParser());
 
-// CORS configuration
+// CORS configuration supporting common frontend local dev origins with credentials
+const allowedOrigins = [
+    "http://127.0.0.1:5501",
+    "http://localhost:5501",
+    "http://127.0.0.1:5500",
+    "http://localhost:5500"
+];
+
 app.use(cors({
-    origin: 'http://127.0.0.1:5501', // Allow requests from your frontend server
-    methods: ['GET', 'POST'], // Allow specific HTTP methods
-    credentials: true, // Allow credentials if needed
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(null, true); // Allow during local development
+        }
+    },
+    methods: ["GET", "POST"],
+    credentials: true,
 }));
 
 // Basic route for testing
 app.get("/", (req, res) => {
-    res.send("Welcome to the home page!");
+    res.send("Welcome to the Netflix Clone API!");
 });
-
-// Debug: Output the MongoDB URI to verify if it's being read correctly
-console.log("MONGO_URI:", process.env.MONGO_URI);
 
 // Authentication routes
 app.use("/api/v1/auth", authRoutes);
@@ -38,3 +50,4 @@ app.use("/api/v1/auth", authRoutes);
 app.listen(PORT, () => {
     console.log(`Server started at http://localhost:${PORT}`);
 });
+

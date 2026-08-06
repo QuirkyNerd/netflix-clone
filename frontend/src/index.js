@@ -21,37 +21,3 @@ for (let i = 0; i < accordian.length; i++) {
         }
     });
 }
-
-// Signup form handling
-document.getElementById('signup-form').addEventListener('submit', async function (event) {
-    event.preventDefault(); // Prevent the default form submission
-
-    // Collect form data
-    const username = document.getElementById('username').value;
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-
-    // Send data to the backend
-    try {
-        const response = await fetch('http://localhost:5000/api/v1/auth/signup', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ username, email, password }),
-        });
-
-        if (response.ok) {
-            const data = await response.json();
-            alert(data.message); // Notify the user
-            // Optionally, redirect or clear the form
-            document.getElementById('signup-form').reset(); // Reset form fields
-        } else {
-            const errorData = await response.json();
-            alert(errorData.message); // Handle errors
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        alert('There was an error with the signup. Please try again.');
-    }
-});
