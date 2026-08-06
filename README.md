@@ -3,35 +3,31 @@
 [![Node.js](https://img.shields.io/badge/Node.js-v18%2B-green.svg)](https://nodejs.org/)
 [![Express.js](https://img.shields.io/badge/Express.js-4.x-lightgrey.svg)](https://expressjs.com/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-Mongoose-brightgreen.svg)](https://www.mongodb.com/)
-[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-A Netflix-inspired full-stack web application featuring a responsive Netflix UI and a Node.js/Express backend with MongoDB persistence, JWT authentication, and HTTP-only cookie session management.
-
-<p align="center">
-  <img src="frontend/src/img/Netflix-Logo.png" alt="Netflix Clone Logo" width="280"/>
-</p>
+A Netflix-inspired full-stack web application featuring a responsive user interface and a Node.js/Express backend with MongoDB persistence, JWT authentication, and HTTP-only cookie session management.
 
 ---
 
 ## Overview
 
-This repository demonstrates an end-to-end full-stack implementation of a Netflix-style streaming web interface combined with secure user authentication workflows. 
+This repository demonstrates a full-stack implementation of a Netflix-style web application combined with secure user authentication workflows.
 
-It covers:
-* **Landing Experience**: Replica of Netflix India's marketing page with hero cards and interactive FAQ accordions.
-* **User Authentication**: Registration and login workflows with email validation, password hashing, and tokenized session cookies.
-* **Session Guarded Dashboard**: Post-login Netflix dashboard featuring media sliders, hero content banners, top-10 lists, and responsive category controls.
+Key areas implemented:
+* **Landing Experience**: Replica of Netflix India's marketing landing page with feature cards and interactive FAQ accordions.
+* **User Authentication**: Registration and login workflows with email/username validation, password hashing, and tokenized session cookies.
+* **Session Guarded Dashboard**: Post-login Netflix dashboard featuring movie carousels, hero banners, top-10 lists, and category selectors.
 
 ---
 
 ## Features
 
 - **Responsive Landing Page**: Netflix-style landing UI with interactive FAQ dropdown accordions.
-- **User Registration**: Form validation, duplicate email/username detection, and salted password hashing using `bcryptjs`.
-- **User Login**: Credential verification issuing 15-day HTTP-only `jwt-netflix` JWT session cookies.
-- **Protected Session Guard**: Pre-load session check (`GET /api/v1/auth/authCheck`) verifying JWT cookies before rendering the dashboard.
+- **User Registration**: Form validation, duplicate email/username handling, and salted password hashing via `bcryptjs`.
+- **User Login**: Credential verification issuing 15-day HTTP-only `jwt-netflix` session cookies.
+- **Protected Session Guard**: Pre-load session verification (`GET /api/v1/auth/authCheck`) validating JWT cookies before permitting dashboard access.
 - **Logout Management**: Invalidates session cookies server-side and redirects users to the login screen.
-- **Interactive Dashboard UI**: Rich Netflix dashboard powered by jQuery, Slick Carousel, Owl Carousel, and Bootstrap 4.
+- **Interactive Dashboard UI**: Rich Netflix media browsing interface powered by jQuery, Slick Carousel, Owl Carousel, and Bootstrap 4.
 
 ---
 
@@ -64,7 +60,7 @@ sequenceDiagram
 
     Note over User, DB: Dashboard Session Verification
     Frontend->>API: GET /api/v1/auth/authCheck (withCredentials)
-    API->>Middleware: Verify 'jwt-netflix' Cookie
+    API->>Middleware: Extract & Verify 'jwt-netflix' Cookie
     Middleware->>DB: Fetch User (exclude password)
     API-->>Frontend: 200 OK (Session Valid)
 
@@ -85,8 +81,8 @@ sequenceDiagram
 
 ### Security & Session Management
 * **bcryptjs** (Password hashing)
-* **jsonwebtoken** (JWT token signing & verification)
-* **cookie-parser** (HTTP cookie parsing)
+* **jsonwebtoken** (JWT signing & verification)
+* **cookie-parser** (Cookie extraction)
 * **CORS** (Cross-origin credential handling)
 
 ### Frontend
@@ -137,19 +133,19 @@ sequenceDiagram
 netflix-clone/
 ├── backend/
 │   ├── config/
-│   │   ├── db.js                 # Database connection logic
-│   │   └── envVars.js            # Environment variable exporter
+│   │   ├── db.js                 # Database connection setup
+│   │   └── envVars.js            # Environment variable configuration
 │   ├── controllers/
-│   │   └── auth.controller.js    # Authentication controllers
+│   │   └── auth.controller.js    # Auth handlers (signup, login, logout, authCheck)
 │   ├── middleware/
 │   │   └── protectRoute.js       # JWT cookie protection middleware
 │   ├── models/
-│   │   └── user.model.js         # Mongoose User schema
+│   │   └── user.model.js         # Mongoose User model
 │   ├── routes/
-│   │   └── auth.route.js         # API route declarations
+│   │   └── auth.route.js         # Authentication API routes
 │   ├── utils/
-│   │   └── generateToken.js      # JWT signing & cookie utility
-│   └── server.js                 # Application entry point
+│   │   └── generateToken.js      # JWT generation & cookie helper
+│   └── server.js                 # Express server entry point
 ├── frontend/
 │   ├── index.html                # Landing page
 │   └── src/
@@ -157,17 +153,18 @@ netflix-clone/
 │       ├── signup.html           # Registration page
 │       ├── index.js              # Landing page accordion handler
 │       ├── js/
-│       │   ├── login.js          # Login form logic & API requests
-│       │   └── signup.js         # Signup form logic & API requests
+│       │   ├── login.js          # Login form logic & API request
+│       │   └── signup.js         # Signup form logic & API request
 │       ├── style/
-│       │   ├── login.css         # Login page styles
-│       │   └── signup.css        # Signup page styles
+│       │   ├── login.css         # Login page stylesheet
+│       │   └── signup.css        # Signup page stylesheet
 │       └── netflix/              # Authenticated streaming dashboard
 │           ├── homepage.html     # Dashboard layout & session guard
 │           ├── main.js           # Slider & carousel interactions
-│           ├── style.css         # Dashboard custom styles
+│           ├── style.css         # Dashboard stylesheet
 │           └── (css/, js/, images/)
 ├── .gitignore
+├── LICENSE
 ├── package.json
 ├── package-lock.json
 └── README.md
@@ -190,7 +187,7 @@ netflix-clone/
 
 ### Prerequisites
 * **Node.js**: v18.0.0 or higher
-* **MongoDB**: Local MongoDB instance or MongoDB Atlas connection URI
+* **MongoDB**: Local MongoDB instance or MongoDB Atlas URI
 
 ### 1. Clone the Repository
 ```bash
@@ -204,12 +201,12 @@ npm install
 ```
 
 ### 3. Environment Variables
-Create a `.env` file in the project root directory with the following configuration:
+Create a `.env` file in the project root directory with the following variables:
 
 ```env
 PORT=5000
 MONGO_URI=mongodb://localhost:27017/netflix-clone
-JWT_SECRET=your_super_secret_jwt_key
+JWT_SECRET=your_jwt_secret_key
 NODE_ENV=development
 ```
 
@@ -217,29 +214,31 @@ NODE_ENV=development
 ```bash
 npm run dev
 ```
-The server will boot up at `http://localhost:5000`.
+The Express server will start on `http://localhost:5000`.
 
 ### 5. Launch Frontend
-Serve the `frontend/` directory using any local web server (such as [VS Code Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) on `http://127.0.0.1:5501` or `http://localhost:5500`).
+Serve the `frontend/` directory using a local HTTP server (such as [VS Code Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) running on `http://127.0.0.1:5501` or `http://localhost:5500` to match CORS configuration).
 
 ---
 
 ## Security
 
-* **Password Security**: Passwords are standardly hashed with `bcryptjs` using a salt factor of 10 prior to storage.
-* **Token Storage**: JWT tokens are transmitted via `httpOnly`, `sameSite: "strict"` cookies, mitigating XSS and CSRF exposure.
-* **Password Stripping**: Sensitive password hashes are stripped (`select("-password")`) from user objects returned by authentication APIs.
-* **CORS Access**: Configured with strict origin checks and `credentials: true` support.
+* **Password Protection**: Passwords are salted and hashed with `bcryptjs` (salt factor 10) prior to persistence.
+* **HTTP-Only Cookies**: JWT tokens are issued with `httpOnly: true`, helping mitigate XSS-based cookie access.
+* **CSRF Mitigation**: Cookies use `sameSite: "strict"` to restrict cross-site cookie transmission.
+* **HTTPS Flag**: Cookies use `secure: true` when `NODE_ENV === "production"`.
+* **Password Exclude**: Sensitive password fields are explicitly excluded (`select("-password")`) from returned user data.
+* **CORS Policy**: Configured to restrict origin access while supporting credentialed requests (`credentials: true`).
 
 ---
 
 ## Project Scope
 
-This project focuses on full-stack web development, user authentication, security practices, and responsive UI design. It does not attempt to reproduce commercial video streaming servers, DRM, transcoders, or payment gateways.
+This project is designed as an educational full-stack web application focusing on authentication architecture, session guards, and Netflix UI design. It does not contain commercial video streaming infrastructure, video transcoders, DRM, or payment gateways.
 
 ---
 
 ## License & Attribution
 
-* **License**: Open-source under the [ISC License](LICENSE).
-* **Disclaimer**: This project is an educational Netflix-inspired clone created for portfolio and learning purposes. It is not affiliated with or endorsed by Netflix, Inc.
+* **License**: Released under the [MIT License](LICENSE).
+* **Disclaimer**: This educational project is a Netflix-inspired clone created for portfolio and learning purposes. It is not affiliated with, sponsored by, or endorsed by Netflix, Inc.
