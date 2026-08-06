@@ -199,7 +199,8 @@ Serve the `frontend/` directory using a local HTTP server (such as [VS Code Live
 
 ---
 
-## 📄 License & Attribution
+## 📄 License
 
-* **License**: Released under the [MIT License](LICENSE).
-* **Disclaimer**: This educational project is a Netflix-inspired clone created for portfolio and learning purposes. It is not affiliated with, sponsored by, or endorsed by Netflix, Inc.
+This project is developed for academic and research demonstration purposes under the MIT License.
+
+© 2026 Netflix Clone
