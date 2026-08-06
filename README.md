@@ -9,7 +9,7 @@ A Netflix-inspired full-stack web application featuring a responsive user interf
 
 ---
 
-## Overview
+## 📌 Overview
 
 This repository demonstrates a full-stack implementation of a Netflix-style web application combined with secure user authentication workflows.
 
@@ -20,7 +20,7 @@ Key areas implemented:
 
 ---
 
-## Features
+## ✨ Key Features
 
 - **Responsive Landing Page**: Netflix-style landing UI with interactive FAQ dropdown accordions.
 - **User Registration**: Form validation, duplicate email/username handling, and salted password hashing via `bcryptjs`.
@@ -31,49 +31,16 @@ Key areas implemented:
 
 ---
 
-## Authentication Flow
+## 📸 Screenshot
 
-```mermaid
-sequenceDiagram
-    autonumber
-    actor User
-    participant Frontend as Frontend Browser
-    participant API as Express Server
-    participant Middleware as protectRoute
-    participant DB as MongoDB
-
-    Note over User, DB: Registration Flow
-    User->>Frontend: Submit Signup Form (username, email, password)
-    Frontend->>API: POST /api/v1/auth/signup
-    API->>DB: Check existing email/username
-    API->>API: Hash password with bcrypt
-    API->>DB: Save User Document
-    API-->>Frontend: 201 Created -> Redirect to Login
-
-    Note over User, DB: Authentication & Session Flow
-    User->>Frontend: Submit Login Form (email, password)
-    Frontend->>API: POST /api/v1/auth/login (withCredentials)
-    API->>DB: Find User & Compare Password
-    API->>API: Sign JWT Token
-    API-->>Frontend: 200 OK + Set HTTP-Only Cookie 'jwt-netflix'
-    Frontend->>Frontend: Redirect to Dashboard (homepage.html)
-
-    Note over User, DB: Dashboard Session Verification
-    Frontend->>API: GET /api/v1/auth/authCheck (withCredentials)
-    API->>Middleware: Extract & Verify 'jwt-netflix' Cookie
-    Middleware->>DB: Fetch User (exclude password)
-    API-->>Frontend: 200 OK (Session Valid)
-
-    Note over User, DB: Logout Flow
-    User->>Frontend: Click Logout
-    Frontend->>API: POST /api/v1/auth/logout (withCredentials)
-    API-->>Frontend: 200 OK + Clear Cookie
-    Frontend->>Frontend: Redirect to Login Page
-```
+<p align="center">
+  <img src="frontend/img1.png" alt="Screenshot 1" width="1000"/>
+</p>
 
 ---
 
-## Tech Stack
+
+## 💻 Tech Stack
 
 ### Backend
 * **Node.js** & **Express.js** (ES Modules)
@@ -92,7 +59,7 @@ sequenceDiagram
 
 ---
 
-## Architecture
+## 🏗️ Architecture
 
 ```
                                ┌─────────────────────────┐
@@ -127,7 +94,7 @@ sequenceDiagram
 
 ---
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 netflix-clone/
@@ -183,7 +150,7 @@ netflix-clone/
 
 ---
 
-## Getting Started
+## ⚡ Getting Started
 
 ### Prerequisites
 * **Node.js**: v18.0.0 or higher
@@ -232,13 +199,7 @@ Serve the `frontend/` directory using a local HTTP server (such as [VS Code Live
 
 ---
 
-## Project Scope
-
-This project is designed as an educational full-stack web application focusing on authentication architecture, session guards, and Netflix UI design. It does not contain commercial video streaming infrastructure, video transcoders, DRM, or payment gateways.
-
----
-
-## License & Attribution
+## 📄 License & Attribution
 
 * **License**: Released under the [MIT License](LICENSE).
 * **Disclaimer**: This educational project is a Netflix-inspired clone created for portfolio and learning purposes. It is not affiliated with, sponsored by, or endorsed by Netflix, Inc.
